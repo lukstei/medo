@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="'Medo | ' + ${article}"></title>
+    <th:block th:include="master::head"/>
+</head>
+<body class="skin-blue">
+<header th:replace="master::header"/>
+
+<div class="wrapper row-offcanvas row-offcanvas-left">
+    <aside th:replace="master::sidebar('search')"/>
+
+    <aside class="right-side">
+        <section class="content-header">
+            <h1 th:text="${article.type}" />
+            <ol class="breadcrumb">
+                <li><a th:href="@{/}"><i class="fa fa-dashboard"></i>Home</a></li>
+                <li class="active" th:text="${article.type}">Kommentar</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="col-md-8">
+                <div class="box box-solid">
+                    <div class="box-header">
+                        <i class="fa fa-text-width"></i>
+                        <h3 class="box-title" th:text="${article}" />
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <dl class="dl-horizontal">
+                            <dt>Typ</dt>
+                            <dd th:text="${article.type}"></dd>
+                            <dt>Datum</dt>
+                            <dd th:text="${article.date}"></dd>
+                            <dt>Person</dt>
+                            <dd th:text="${article.author} ?: '&lt;Kein Autor&gt;'"></dd>
+                            <dt>Medium</dt>
+                            <dd th:text="${article.media}"></dd>
+                        </dl>
+
+                        <div class="text" th:utext="${article.text}" />
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div>
+
+
+        </section>
+        <!-- /.content -->
+    </aside>
+    <!-- /.right-side -->
+</div>
+
+<th:block th:include="master::footer-js"/>
+</body>
+</html>

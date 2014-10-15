@@ -10,9 +10,8 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 @EnableAutoConfiguration
 @EnableConfigurationProperties
-public class Application {
-
+public class Server {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(Server.class, args);
     }
 }
