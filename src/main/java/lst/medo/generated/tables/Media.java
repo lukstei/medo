@@ -11,7 +11,7 @@ package lst.medo.generated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Media extends org.jooq.impl.TableImpl<lst.medo.generated.tables.records.MediaRecord> {
 
-	private static final long serialVersionUID = -1162260891;
+	private static final long serialVersionUID = 76516154;
 
 	/**
 	 * The singleton instance of <code>public.media</code>
@@ -79,7 +79,7 @@ public class Media extends org.jooq.impl.TableImpl<lst.medo.generated.tables.rec
 	 */
 	@Override
 	public java.util.List<org.jooq.UniqueKey<lst.medo.generated.tables.records.MediaRecord>> getKeys() {
-		return java.util.Arrays.<org.jooq.UniqueKey<lst.medo.generated.tables.records.MediaRecord>>asList(lst.medo.generated.Keys.MEDIA_PKEY);
+		return java.util.Arrays.<org.jooq.UniqueKey<lst.medo.generated.tables.records.MediaRecord>>asList(lst.medo.generated.Keys.MEDIA_PKEY, lst.medo.generated.Keys.MEDIA_NAME_KEY);
 	}
 
 	/**

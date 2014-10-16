@@ -10,14 +10,9 @@ public interface ArticleDao {
     Article save(Article article);
 
     List<Article> find(Params params);
+    @Nullable Article findById(int id);
 
     class Params {
-        public static Params byId(int id) {
-            Params params = new Params();
-            params.id = id;
-            return params;
-        }
-
         @Nullable Integer id;
         @Nullable String text;
         @Nullable String author;

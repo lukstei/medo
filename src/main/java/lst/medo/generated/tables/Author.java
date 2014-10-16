@@ -11,7 +11,7 @@ package lst.medo.generated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Author extends org.jooq.impl.TableImpl<lst.medo.generated.tables.records.AuthorRecord> {
 
-	private static final long serialVersionUID = -808149787;
+	private static final long serialVersionUID = 847712689;
 
 	/**
 	 * The singleton instance of <code>public.author</code>
@@ -79,7 +79,7 @@ public class Author extends org.jooq.impl.TableImpl<lst.medo.generated.tables.re
 	 */
 	@Override
 	public java.util.List<org.jooq.UniqueKey<lst.medo.generated.tables.records.AuthorRecord>> getKeys() {
-		return java.util.Arrays.<org.jooq.UniqueKey<lst.medo.generated.tables.records.AuthorRecord>>asList(lst.medo.generated.Keys.AUTHOR_PKEY);
+		return java.util.Arrays.<org.jooq.UniqueKey<lst.medo.generated.tables.records.AuthorRecord>>asList(lst.medo.generated.Keys.AUTHOR_PKEY, lst.medo.generated.Keys.AUTHOR_NAME_KEY);
 	}
 
 	/**

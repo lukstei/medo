@@ -1,7 +1,11 @@
 package lst.medo.config;
 
 import lst.medo.dao.ArticleDao;
+import lst.medo.dao.AuthorDao;
+import lst.medo.dao.MediaDao;
 import lst.medo.dao.impl.JooqArticleDao;
+import lst.medo.dao.impl.JooqAuthorDao;
+import lst.medo.dao.impl.JooqMediaDao;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -15,7 +19,7 @@ import javax.sql.DataSource;
 @Configuration
 public class Config {
     @Bean
-    @ConfigurationProperties(prefix="medo.datasource")
+    @ConfigurationProperties(prefix = "medo.datasource")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
@@ -26,5 +30,17 @@ public class Config {
 
     @Bean ArticleDao articleDao(DSLContext context) {
         return new JooqArticleDao(context);
+    }
+
+    @Bean MediaDao mediaDao(DSLContext context) {
+        return new JooqMediaDao(context);
+    }
+
+    @Bean AuthorDao authorDao(DSLContext context) {
+        return new JooqAuthorDao(context);
+    }
+
+    @Bean(name = "urlCreator") UrlCreator urlCreator() {
+        return new UrlCreator();
     }
 }

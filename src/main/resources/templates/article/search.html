@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${'Medo | Suche: ' + search}"></title>
+    <th:block th:include="master::head"/>
+    <link href="../css/medo.css" th:href="@{/css/medo/typeahead.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body class="skin-blue">
+<header th:replace="master::header"/>
+
+<div class="wrapper row-offcanvas row-offcanvas-left">
+    <aside th:replace="master::sidebar('search')"/>
+
+    <!-- Right side column. Contains the navbar and content of the page -->
+    <aside class="right-side">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Suche
+            </h1>
+            <ol class="breadcrumb">
+                <li><a th:href="@{/}"><i class="fa fa-dashboard"></i>Home</a></li>
+                <li class="active">Suche</li>
+            </ol>
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title">Suche</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <form role="form" th:action="@{/articles}" method="get">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="text">Text:</label>
+                                    <textarea th:text="${param.text} ? ${param.text[0]}" class="form-control input-lg"
+                                              rows="3"
+                                              id="text" name="text"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="author">Person:</label>
+                                            <input th:value="${param.author} ? ${param.author[0]}" type="text"
+                                                   class="form-control typeahead"
+                                                   id="author" name="author" autocomplete="off"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="media">Medium:</label>
+                                            <input th:value="${param.media} ? ${param.media[0]}" type="text"
+                                                   class="form-control typeahead"
+                                                   id="media" name="media" autocomplete="off"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Datum:</label>
+
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input th:value="${param.date} ? ${param.date[0]}" type="text"
+                                                       class="form-control pull-right" id="date"
+                                                       name="date"/>
+                                            </div>
+                                        </div>
+                                        <!-- /.input group -->
+                                    </div>
+                                    <!-- /.form group -->
+                                </div>
+
+                            </div>
+                            <!-- /.box-body -->
+
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-primary">Suche</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box -->
+
+                    <div class="box" th:if="${result}">
+                        <div class="box-header">
+                            <h3 class="box-title">Ergebnisse</h3>
+                        </div>
+                        <!-- /.box-header -->
+
+                        <div class="box-body">
+                            <p th:if="${result.empty}">Keine Ergebnisse</p>
+
+                            <div th:each="a : ${result}">
+                                <h4><a th:href="@{${@urlCreator.viewArticle(a)}}" th:text="${a}"></a></h4>
+
+                                <p th:utext="${a.text}" class="text"></p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.box -->
+
+                </div>
+                <!--/.col (left) -->
+                <!--/.col (right) -->
+            </div>
+            <!-- /.row -->
+        </section>
+
+        <!-- /.content -->
+    </aside>
+    <!-- /.right-side -->
+</div>
+
+<th:block th:include="master::footer-js"/>
+<script th:src="@{/js/medo/typeahead.bundle.min.js}"/>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    var authors = new Bloodhound({
+        name: 'authors',
+        remote: "/ajax?type=author&q=%QUERY",
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace
+    });
+    authors.initialize();
+
+    var medias = new Bloodhound({
+        name: 'authors',
+        remote: "/ajax?type=media&q=%QUERY",
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace
+    });
+    medias.initialize();
+
+    $(function () {
+        $('#author').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 2}, {
+            displayKey: 'name',
+            name: 'author',
+            source: authors.ttAdapter() });
+
+        $('#media').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 2}, {
+            displayKey: 'name',
+            name: 'media',
+            source: medias.ttAdapter() });
+    });
+    /*]]>*/
+</script>
+</body>
+</html>

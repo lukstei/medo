@@ -29,5 +29,12 @@ create table article
   txt text not null,
   author int references author(id),
   article_date date  not null,
-  media int not null
+  media int not null,
+
+  fulltext_index tsvector not null
 );
+create index article_fulltext_idx on article using gin(fulltext_index);
+
+create trigger article_index_trigger
+before insert or update on article for each row
+execute procedure tsvector_update_trigger(fulltext_index, 'german', txt);

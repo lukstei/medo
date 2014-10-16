@@ -48,7 +48,6 @@ public class Importer {
 
             new Importer(context).startImport(path);
         } catch (Exception e) {
-            // For the sake of this tutorial, let's keep exception handling simple
             e.printStackTrace();
             System.exit(1);
         } finally {

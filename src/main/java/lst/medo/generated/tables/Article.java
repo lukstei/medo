@@ -11,7 +11,7 @@ package lst.medo.generated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Article extends org.jooq.impl.TableImpl<lst.medo.generated.tables.records.ArticleRecord> {
 
-	private static final long serialVersionUID = -13521534;
+	private static final long serialVersionUID = -1267052707;
 
 	/**
 	 * The singleton instance of <code>public.article</code>
@@ -55,6 +55,11 @@ public class Article extends org.jooq.impl.TableImpl<lst.medo.generated.tables.r
 	 * The column <code>public.article.media</code>.
 	 */
 	public final org.jooq.TableField<lst.medo.generated.tables.records.ArticleRecord, java.lang.Integer> MEDIA = createField("media", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+	/**
+	 * The column <code>public.article.fulltext_index</code>.
+	 */
+	public final org.jooq.TableField<lst.medo.generated.tables.records.ArticleRecord, java.lang.Object> FULLTEXT_INDEX = createField("fulltext_index", org.jooq.impl.DefaultDataType.getDefaultDataType("tsvector"), this, "");
 
 	/**
 	 * Create a <code>public.article</code> table reference

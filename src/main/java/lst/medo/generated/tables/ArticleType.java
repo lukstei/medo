@@ -11,7 +11,7 @@ package lst.medo.generated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ArticleType extends org.jooq.impl.TableImpl<lst.medo.generated.tables.records.ArticleTypeRecord> {
 
-	private static final long serialVersionUID = -795260274;
+	private static final long serialVersionUID = 2020308232;
 
 	/**
 	 * The singleton instance of <code>public.article_type</code>
@@ -71,7 +71,7 @@ public class ArticleType extends org.jooq.impl.TableImpl<lst.medo.generated.tabl
 	 */
 	@Override
 	public java.util.List<org.jooq.UniqueKey<lst.medo.generated.tables.records.ArticleTypeRecord>> getKeys() {
-		return java.util.Arrays.<org.jooq.UniqueKey<lst.medo.generated.tables.records.ArticleTypeRecord>>asList(lst.medo.generated.Keys.ARTICLE_TYPE_PKEY);
+		return java.util.Arrays.<org.jooq.UniqueKey<lst.medo.generated.tables.records.ArticleTypeRecord>>asList(lst.medo.generated.Keys.ARTICLE_TYPE_PKEY, lst.medo.generated.Keys.ARTICLE_TYPE_NAME_KEY);
 	}
 
 	/**

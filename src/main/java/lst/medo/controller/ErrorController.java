@@ -1,4 +1,4 @@
-package lst.medo;
+package lst.medo.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
