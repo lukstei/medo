@@ -62,6 +62,8 @@ springBoot {
     mainClass = "lst.medo.Server"
 }
 
+task stage(dependsOn: "compileJava")
+
 task wrapper(type: Wrapper) {
     gradleVersion = '1.12'
 }
