@@ -1,1 +1,1 @@
-web: env SERVER_PORT=$p ./gradle bootRun
+web: ./gradle -Pserver.port=$p bootRun
