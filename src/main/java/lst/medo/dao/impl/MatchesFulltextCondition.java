@@ -6,13 +6,15 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.CustomCondition;
 import org.jooq.impl.DSL;
 
+import static org.jooq.impl.DSL.inline;
+
 public class MatchesFulltextCondition extends CustomCondition {
     public static Field<String> plainToTsQuery(Field<String> query) {
-        return DSL.function("plainto_tsquery", String.class, query);
+        return DSL.function("plainto_tsquery", String.class, inline("german"), query);
     }
 
     public static Field<String> tsHeadline(Field<String> body, Field<String> tsQuery) {
-        return DSL.function("ts_headline", String.class, body, tsQuery);
+        return DSL.function("ts_headline", String.class, body, tsQuery, inline("StartSel=<em>, StopSel=</em>, MaxWords=90, MinWords=60, ShortWord=2, HighlightAll=FALSE"));
     }
 
     public static MatchesFulltextCondition matchesFulltext(Field<?> search, Field<String> pattern) {

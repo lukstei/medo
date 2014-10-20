@@ -8,7 +8,6 @@ import java.util.List;
 
 import static lst.medo.generated.Tables.AUTHOR;
 
-
 public class JooqAuthorDao implements AuthorDao {
     DSLContext mContext;
 

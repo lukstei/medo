@@ -2,3 +2,12 @@
     font-family: georgia, 'times new roman', times, serif;
     font-size: 16px;
 }
+
+.search-result em {
+    background: #FFFF00;
+}
+
+.form-group.required label:after {
+    content:"*";
+    color:red;
+}

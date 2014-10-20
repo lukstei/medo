@@ -2,19 +2,22 @@ package lst.medo.model;
 
 
 import lst.medo.config.Util;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 import static java.lang.String.format;
 
 public class Article {
     @Nullable Integer id;
-    String type;
-    String text;
+    @NotEmpty String type;
+    @NotEmpty String text;
     @Nullable String author;
-    LocalDate date;
-    String media;
+    @NotNull @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate date;
+    @NotEmpty String media;
 
     public Article() {
     }

@@ -5,6 +5,7 @@ import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.sax.BodyContentHandler;
+import org.xml.sax.SAXException;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerConfigurationException;
@@ -20,6 +21,16 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class TikaToHtmlParser implements ToHtmlParser {
+    static class Replace {
+        Pattern mPattern;
+        String mReplace;
+
+        Replace(String pattern, String replace) {
+            mPattern = Pattern.compile(pattern);
+            mReplace = replace;
+        }
+    }
+
     private final Tika mTika;
 
     public TikaToHtmlParser() {
@@ -27,9 +38,16 @@ public class TikaToHtmlParser implements ToHtmlParser {
         mTika.setMaxStringLength(-1);
     }
 
-    List<Pattern> clean = Arrays.asList(
-            Pattern.compile("<[bi]/>"),
-            Pattern.compile(" xmlns=\".+?\"")
+    List<Replace> clean = Arrays.asList(
+            new Replace("<[bi]/>", ""),
+            new Replace(" xmlns=\".+?\"", ""),
+            new Replace("&uuml;", "ü"),
+            new Replace("&Uuml;", "Ü"),
+            new Replace("&ouml;", "ö"),
+            new Replace("&Ouml;", "Ö"),
+            new Replace("&auml;", "ä"),
+            new Replace("&Auml;", "Ä"),
+            new Replace("&szlig;", "ß")
     );
 
     @Override public String parse(Path file) throws ParseException {
@@ -53,12 +71,12 @@ public class TikaToHtmlParser implements ToHtmlParser {
             mTika.getParser().parse(new FileInputStream(file.toFile()), new BodyContentHandler(handler), metadata, new ParseContext());
 
             String result = sw.toString();
-            for (Pattern pattern : clean) {
-                result = pattern.matcher(result).replaceAll("");
+            for (Replace replace : clean) {
+                result = replace.mPattern.matcher(result).replaceAll(replace.mReplace);
             }
 
             return result;
-        } catch (org.xml.sax.SAXException | IOException | TikaException e) {
+        } catch (SAXException | IOException | TikaException e) {
             throw new ParseException(e);
         }
     }

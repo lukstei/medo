@@ -43,10 +43,10 @@
         this.separator = ' - ';
 
         this.locale = {
-            applyLabel: 'Apply',
-            cancelLabel: 'Cancel',
-            fromLabel: 'From',
-            toLabel: 'To',
+            applyLabel: 'Ok',
+            cancelLabel: 'Abbrechen',
+            fromLabel: 'Von',
+            toLabel: 'Bis',
             weekLabel: 'W',
             customRangeLabel: 'Custom Range',
             daysOfWeek: moment()._lang._weekdaysMin.slice(),

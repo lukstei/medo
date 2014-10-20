@@ -1,5 +1,6 @@
 package lst.medo.importer;
 
+import lst.medo.config.DatabaseEnvConfig;
 import lst.medo.dao.ArticleDao;
 import lst.medo.dao.impl.JooqArticleDao;
 import lst.medo.model.Article;
@@ -34,15 +35,18 @@ public class Importer {
             System.exit(1);
         }
 
-        Connection conn = null;
+        DatabaseEnvConfig config = new DatabaseEnvConfig();
+        if(config.getUrl() == null) {
+            System.err.println("Please provide database configuration as properties");
+            System.err.println("Possible values: -Dmedo.db.url, -Dmedo.db.username, -Dmedo.db.password");
+            System.exit(1);
+        }
 
-        String userName = "postgres";
-        String password = "";
-        String url = "jdbc:postgresql://localhost:5432/medo";
+        Connection conn = null;
 
         try {
             Class.forName("org.postgresql.Driver").newInstance();
-            conn = DriverManager.getConnection(url, userName, password);
+            conn = DriverManager.getConnection(config.getUrl(), config.getUserName(), config.getPassword());
 
             DSLContext context = DSL.using(conn, SQLDialect.POSTGRES);
 

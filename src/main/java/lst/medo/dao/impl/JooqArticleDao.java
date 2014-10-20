@@ -98,13 +98,13 @@ public class JooqArticleDao implements ArticleDao {
             where = where.and(orQuery(params.getMedia(), t -> MEDIA.NAME.likeIgnoreCase("%" + t + "%")));
         }
         if (params.getFrom() != null) {
-            where = where.and(ARTICLE.ARTICLE_DATE.greaterOrEqual(Util.toSqlDate(params.getFrom())));
+            where = where.and(ARTICLE.ARTICLE_DATE.greaterOrEqual(params.getFrom()));
         }
         if (params.getTo() != null) {
-            where = where.and(ARTICLE.ARTICLE_DATE.lessOrEqual(Util.toSqlDate(params.getTo())));
+            where = where.and(ARTICLE.ARTICLE_DATE.lessOrEqual(params.getTo()));
         }
 
-        return where.limit(30).fetch(r ->
+        return where.orderBy(ARTICLE.ARTICLE_DATE.desc()).limit(30).fetch(r ->
                 new Article(
                         r.getValue(ARTICLE.ID),
                         r.getValue(ARTICLE_TYPE.NAME),
@@ -130,6 +130,10 @@ public class JooqArticleDao implements ArticleDao {
                                 r.getValue(AUTHOR.NAME),
                                 Util.fromSqlDate(r.getValue(ARTICLE.ARTICLE_DATE)),
                                 r.getValue(MEDIA.NAME)));
+    }
+
+    @Override public void delete(int id) {
+        mContext.delete(ARTICLE).where(ARTICLE.ID.eq(id));
     }
 
     Condition orQuery(String query, Function<String, Condition> f) {

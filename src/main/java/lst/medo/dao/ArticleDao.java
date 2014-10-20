@@ -4,21 +4,25 @@ import lst.medo.model.Article;
 
 import javax.annotation.Nullable;
 import java.time.LocalDate;
+import java.sql.Date;
 import java.util.List;
 
 public interface ArticleDao {
     Article save(Article article);
 
     List<Article> find(Params params);
+
     @Nullable Article findById(int id);
+
+    void delete(int id);
 
     class Params {
         @Nullable Integer id;
         @Nullable String text;
         @Nullable String author;
         @Nullable String media;
-        @Nullable LocalDate from;
-        @Nullable LocalDate to;
+        @Nullable Date from;
+        @Nullable Date to;
 
         @Nullable public Integer getId() {
             return id;
@@ -52,19 +56,19 @@ public interface ArticleDao {
             this.media = media;
         }
 
-        @Nullable public LocalDate getFrom() {
+        @Nullable public Date getFrom() {
             return from;
         }
 
-        public void setFrom(@Nullable LocalDate from) {
+        public void setFrom(@Nullable Date from) {
             this.from = from;
         }
 
-        @Nullable public LocalDate getTo() {
+        @Nullable public Date getTo() {
             return to;
         }
 
-        public void setTo(@Nullable LocalDate to) {
+        public void setTo(@Nullable Date to) {
             this.to = to;
         }
     }

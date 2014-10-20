@@ -12,7 +12,7 @@
 
     <aside class="right-side">
         <section class="content-header">
-            <h1 th:text="${article.type}" />
+            <h1 th:text="${article.type}"/>
             <ol class="breadcrumb">
                 <li><a th:href="@{/}"><i class="fa fa-dashboard"></i>Home</a></li>
                 <li class="active" th:text="${article.type}">Kommentar</li>
@@ -24,9 +24,23 @@
             <div class="col-md-8">
                 <div class="box box-solid">
                     <div class="box-header">
-                        <i class="fa fa-text-width"></i>
-                        <h3 class="box-title" th:text="${article}" />
-                    </div><!-- /.box-header -->
+                        <i class="fa fa-file-text-o"></i>
+
+                        <h3 class="box-title" th:text="${article}"/>
+
+                        <span class="pull-right" style="padding: 10px">
+                            <a th:href="@{/articles/} + ${article.id} + '/edit'">
+                                <button class="btn btn-sm btn-default">Ändern</button>
+                            </a>
+                            <form action="post" th:action="@{/articles/} + ${article.id} + '/delete'"
+                                  style="display:inline;">
+                                <a>
+                                    <button class="btn btn-danger btn-sm" id="delete-btn">Löschen</button>
+                                </a>
+                            </form>
+                        </span>
+                    </div>
+                    <!-- /.box-header -->
                     <div class="box-body">
                         <dl class="dl-horizontal">
                             <dt>Typ</dt>
@@ -39,12 +53,12 @@
                             <dd th:text="${article.media}"></dd>
                         </dl>
 
-                        <div class="text" th:utext="${article.text}" />
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
+                        <div class="text" th:utext="${article.text}"/>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
             </div>
-
-
         </section>
         <!-- /.content -->
     </aside>
@@ -52,5 +66,18 @@
 </div>
 
 <th:block th:include="master::footer-js"/>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    $(function () {
+        $('#delete-btn').click(function (e) {
+            e.preventDefault();
+            var d = confirm("Artikel löschen?");
+            if (d === true) {
+                $(e.target).closest("form").submit();
+            }
+        });
+    });
+    /*]]>*/
+</script>
 </body>
 </html>
