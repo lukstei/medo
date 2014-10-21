@@ -4,4 +4,5 @@
     <logger name="org.springframework.web" level="DEBUG"/>
     <logger name="org.jooq" level="DEBUG"/>
     <logger name="org.springframework.web" level="WARN"/>
+    <logger name="ch.qos.logback" level="WARN"/>
 </configuration>

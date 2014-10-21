@@ -1,1 +1,1 @@
-web: ./gradle -Pserver.port=$p bootRun
+web: ./gradlew server -Dexec.args="--url=jdbc:postgresql://localhost:5432/medo --user=postgres --port=80"

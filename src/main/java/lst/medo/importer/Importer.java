@@ -1,77 +1,48 @@
 package lst.medo.importer;
 
-import lst.medo.config.DatabaseEnvConfig;
+import lst.medo.config.Config;
 import lst.medo.dao.ArticleDao;
-import lst.medo.dao.impl.JooqArticleDao;
 import lst.medo.model.Article;
 import org.jooq.DSLContext;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnNotWebApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Importer {
-    public static void main(String[] args) {
-        Path path = null;
-        if (args.length == 1) {
-            String pathStr = args[0];
-            try {
-                path = Paths.get(pathStr);
-            } catch (InvalidPathException e) {
-                System.err.println("Invalid path " + pathStr);
-                System.exit(1);
-            }
-        }
+@Component
+@ConditionalOnNotWebApplication
+public class Importer implements CommandLineRunner {
+    @Autowired DSLContext mContext;
+    @Autowired ArticleDao mArticleDao;
+    ToHtmlParser mToHtmlParser =  ToHtmlParser.create();
 
-        if (path == null) {
-            System.err.println("Usage: lst.medo.importer.Importer import-path");
-            System.exit(1);
-        }
+    @Value("${path}")
+    String path;
 
-        DatabaseEnvConfig config = new DatabaseEnvConfig();
-        if(config.getUrl() == null) {
-            System.err.println("Please provide database configuration as properties");
-            System.err.println("Possible values: -Dmedo.db.url, -Dmedo.db.username, -Dmedo.db.password");
-            System.exit(1);
-        }
-
-        Connection conn = null;
-
-        try {
-            Class.forName("org.postgresql.Driver").newInstance();
-            conn = DriverManager.getConnection(config.getUrl(), config.getUserName(), config.getPassword());
-
-            DSLContext context = DSL.using(conn, SQLDialect.POSTGRES);
-
-            new Importer(context).startImport(path);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ignore) {
-                }
-            }
-        }
+    public static void main(String... args) {
+        new SpringApplicationBuilder(Importer.class, Config.class)
+                .web(false)
+                .run(args);
     }
 
-    DSLContext mContext;
-    ArticleDao mArticleDao;
-    ToHtmlParser mToHtmlParser;
+    @Override public void run(String... args) throws Exception {
+        if (path == null) {
+            System.err.println("Usage: lst.medo.importer.Importer --path=<import dir>\n\t[--url=<datasource url>]\n\t[--user=<datasource username>]\n\t[--password=<datasource password>]");
+            System.exit(1);
+        }
 
-    public Importer(DSLContext context) {
-        mContext = context;
-        mArticleDao = new JooqArticleDao(context);
-        mToHtmlParser = ToHtmlParser.create();
+        startImport(Paths.get(path));
     }
 
     void startImport(Path path) throws IOException {
@@ -123,4 +94,5 @@ public class Importer {
 
         System.out.println("Imported " + fileName);
     }
+
 }

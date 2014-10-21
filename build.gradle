@@ -62,10 +62,16 @@ springBoot {
     mainClass = "lst.medo.Server"
 }
 
+task server(dependsOn: "stage", type: JavaExec ) {
+    main = 'lst.medo.Server'
+    classpath = sourceSets.main.runtimeClasspath
+    args System.getProperty("exec.args").split()
+}
+
 task stage(dependsOn: "compileJava")
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.1'
 }
 
 task('generateJooq') << {
