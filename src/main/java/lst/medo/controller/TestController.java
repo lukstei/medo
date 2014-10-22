@@ -17,15 +17,10 @@ import java.util.Date;
 
 @RestController
 public class TestController {
-    @Autowired
-    FormattingConversionService mConversionService;
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    DateRange dateRange=new DateRange(new Date(), new Date());
-
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     public String index(ModelMap model) {
-        return mConversionService.convert(dateRange, String.class);
+        System.gc();
+        return "ok";
     }
 }
