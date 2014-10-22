@@ -21,9 +21,13 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
 jar {
-    baseName = 'demo'
-    version = '0.0.1-SNAPSHOT'
+    archiveName = "medo.jar"
 }
+
+bootRepackage {
+    mainClass = "lst.medo.Server"
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -58,17 +62,13 @@ idea {
     }
 }
 
-springBoot {
-    mainClass = "lst.medo.Server"
-}
-
 task server(dependsOn: "stage", type: JavaExec ) {
     main = 'lst.medo.Server'
     classpath = sourceSets.main.runtimeClasspath
     args System.getProperty("exec.args").split()
 }
 
-task stage(dependsOn: "compileJava")
+task stage(dependsOn: "build")
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.1'

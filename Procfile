@@ -1,1 +1,1 @@
-web: ./gradlew server -Dexec.args="--url=jdbc:postgresql://localhost:5432/medo --user=postgres --port=$PORT"
+web: java -jar build/libs/medo.jar --url=jdbc:postgresql://localhost:5432/medo --user=postgres --port=$PORT
