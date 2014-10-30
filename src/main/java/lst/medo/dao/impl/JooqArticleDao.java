@@ -5,15 +5,18 @@ import lst.medo.generated.tables.records.ArticleRecord;
 import lst.medo.generated.tables.records.AuthorRecord;
 import lst.medo.generated.tables.records.MediaRecord;
 import lst.medo.model.Article;
+import lst.medo.model.Result;
 import org.jooq.*;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import static lst.medo.dao.impl.MatchesFulltextCondition.*;
 import static lst.medo.generated.Tables.*;
+import static org.jooq.impl.DSL.count;
 import static org.jooq.impl.DSL.val;
 
 public class JooqArticleDao implements ArticleDao {
@@ -65,7 +68,7 @@ public class JooqArticleDao implements ArticleDao {
         return article;
     }
 
-    @Override public List<Article> find(Params params) {
+    @Override public Result<Article> find(Params params) {
         boolean isFulltextSearch = params.getText() != null;
 
         SelectSelectStep<?> select = mContext
@@ -104,14 +107,22 @@ public class JooqArticleDao implements ArticleDao {
             where = where.and(ARTICLE.ARTICLE_DATE.lessOrEqual(params.getTo()));
         }
 
-        return where.orderBy(ARTICLE.ARTICLE_DATE.desc()).limit(30).fetch(r ->
-                new Article(
-                        r.getValue(ARTICLE.ID),
-                        r.getValue(ARTICLE_TYPE.NAME),
-                        isFulltextSearch ? r.getValue(tsHeadline) : null,
-                        r.getValue(AUTHOR.NAME),
-                        Util.fromSqlDate(r.getValue(ARTICLE.ARTICLE_DATE)),
-                        r.getValue(MEDIA.NAME)));
+        List<Article> articles = where
+                //.groupBy(ARTICLE.ID, ARTICLE_TYPE.NAME, AUTHOR.NAME, ARTICLE.ARTICLE_DATE, MEDIA.NAME)
+                .orderBy(ARTICLE.ARTICLE_DATE.desc())
+                .limit(params.getPage().getItemsPerPage())
+                .offset(params.getPage().getOffset())
+                .fetch(r ->
+                    new Article(
+                            r.getValue(ARTICLE.ID),
+                            r.getValue(ARTICLE_TYPE.NAME),
+                            isFulltextSearch ? r.getValue(tsHeadline) : null,
+                            r.getValue(AUTHOR.NAME),
+                            Util.fromSqlDate(r.getValue(ARTICLE.ARTICLE_DATE)),
+                            r.getValue(MEDIA.NAME))
+                );
+
+        return new Result<>(articles, where.fetchCount());
     }
 
     @Nullable @Override public Article findById(int id) {

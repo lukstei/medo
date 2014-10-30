@@ -60,9 +60,4 @@ public class Config  {
     @Bean AuthorDao authorDao(DSLContext context) {
         return new JooqAuthorDao(context);
     }
-
-    @Bean(name = "urlCreator") UrlCreator urlCreator() {
-        return new UrlCreator();
-    }
-
 }

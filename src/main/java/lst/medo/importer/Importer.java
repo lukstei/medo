@@ -22,9 +22,6 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan
 @Component
 @ConditionalOnNotWebApplication
 public class Importer implements CommandLineRunner {

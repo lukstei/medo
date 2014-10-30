@@ -1,6 +1,7 @@
 package lst.medo.dao;
 
 import lst.medo.model.Article;
+import lst.medo.model.Page;
 
 import javax.annotation.Nullable;
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ import java.util.List;
 public interface ArticleDao {
     Article save(Article article);
 
-    List<Article> find(Params params);
+    lst.medo.model.Result<Article> find(Params params);
 
     @Nullable Article findById(int id);
 
@@ -23,6 +24,16 @@ public interface ArticleDao {
         @Nullable String media;
         @Nullable Date from;
         @Nullable Date to;
+        Page page = new Page(1, 30);
+
+
+        public Page getPage() {
+            return page;
+        }
+
+        public void setPage(Page page) {
+            this.page = page;
+        }
 
         @Nullable public Integer getId() {
             return id;

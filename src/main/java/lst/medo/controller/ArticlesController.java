@@ -1,9 +1,9 @@
 package lst.medo.controller;
 
+import lst.medo.config.UrlCreator;
 import lst.medo.config.Util;
 import lst.medo.dao.ArticleDao;
-import lst.medo.model.Article;
-import lst.medo.model.DateRange;
+import lst.medo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -15,6 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,11 +35,13 @@ public class ArticlesController {
                          @RequestParam(value = "author", required = false) String author,
                          @RequestParam(value = "media", required = false) String media,
                          @RequestParam(value = "date", required = false)
-                         @DateTimeFormat(pattern = "dd.MM.yyyy") DateRange dateRange) {
+                         @DateTimeFormat(pattern = "dd.MM.yyyy") DateRange dateRange,
+                         @RequestParam(value = "page", required = false) Optional<Integer> pageO) {
         ArticleDao.Params params = new ArticleDao.Params();
         params.setText(text);
         params.setAuthor(author);
         params.setMedia(media);
+        params.setPage(params.getPage().withPageNum(pageO.orElse(1)));
 
         if (dateRange != null) {
             params.setFrom(new Date(dateRange.getFrom().getTime()));
@@ -46,7 +50,9 @@ public class ArticlesController {
 
         String s = Stream.of(author, media, text).filter(t -> !Util.isEmpty(t)).collect(Collectors.joining(" - "));
 
-        model.addAttribute("result", mArticleDao.find(params));
+        Result<Article> result = mArticleDao.find(params);
+        model.addAttribute("result", result.getItems());
+        model.addAttribute("page", new PageInfo(params.getPage(), result.getCount()));
         model.addAttribute("search", s);
 
         return "article/search";

@@ -24,6 +24,10 @@ jar {
     archiveName = "medo.jar"
 }
 
+springBoot {
+    mainClass = "lst.medo.Server"
+}
+
 bootRepackage {
     mainClass = "lst.medo.Server"
 }
