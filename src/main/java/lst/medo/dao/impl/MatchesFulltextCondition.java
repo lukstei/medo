@@ -14,7 +14,7 @@ public class MatchesFulltextCondition extends CustomCondition {
     }
 
     public static Field<String> tsHeadline(Field<String> body, Field<String> tsQuery) {
-        return DSL.function("ts_headline", String.class, body, tsQuery, inline("StartSel=<em>, StopSel=</em>, MaxWords=90, MinWords=60, ShortWord=2, HighlightAll=FALSE"));
+        return DSL.function("ts_headline", String.class, inline("german"), body, tsQuery, inline("StartSel=<em>, StopSel=</em>, MaxWords=90, MinWords=60, ShortWord=2, HighlightAll=FALSE"));
     }
 
     public static MatchesFulltextCondition matchesFulltext(Field<?> search, Field<String> pattern) {
