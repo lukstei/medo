@@ -107,6 +107,7 @@ public class JooqArticleDao implements ArticleDao {
             where = where.and(ARTICLE.ARTICLE_DATE.lessOrEqual(params.getTo()));
         }
 
+        int count = where.fetchCount();
         List<Article> articles = where
                 //.groupBy(ARTICLE.ID, ARTICLE_TYPE.NAME, AUTHOR.NAME, ARTICLE.ARTICLE_DATE, MEDIA.NAME)
                 .orderBy(ARTICLE.ARTICLE_DATE.desc())
@@ -122,7 +123,7 @@ public class JooqArticleDao implements ArticleDao {
                             r.getValue(MEDIA.NAME))
                 );
 
-        return new Result<>(articles, where.fetchCount());
+        return new Result<>(articles, count);
     }
 
     @Nullable @Override public Article findById(int id) {

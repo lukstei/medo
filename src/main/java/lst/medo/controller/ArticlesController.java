@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ import java.util.stream.Stream;
 @Controller
 public class ArticlesController {
     @Autowired ArticleDao mArticleDao;
+    @Autowired HttpServletRequest mRequest;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(ModelMap model) {
@@ -52,7 +54,11 @@ public class ArticlesController {
 
         Result<Article> result = mArticleDao.find(params);
         model.addAttribute("result", result.getItems());
-        model.addAttribute("page", new PageInfo(params.getPage(), result.getCount()));
+
+        PageInfo pageInfo = new PageInfo(params.getPage(), result.getCount());
+        pageInfo.setPageToUrl(UrlCreator.urlSettingQueryParam(mRequest, "page"));
+
+        model.addAttribute("page", pageInfo);
         model.addAttribute("search", s);
 
         return "article/search";

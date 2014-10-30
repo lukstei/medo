@@ -1,7 +1,12 @@
 package lst.medo.model;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static java.util.stream.Collectors.toList;
 
 public class PageInfo {
     Page page;
@@ -30,7 +35,7 @@ public class PageInfo {
     }
 
     public int getLastPage() {
-        return total / page.getItemsPerPage() + total % page.getItemsPerPage() == 0 ? 0 : 1;
+        return total / page.getItemsPerPage() + (total % page.getItemsPerPage() == 0 ? 0 : 1);
     }
 
     public boolean getHasPrevious() {
@@ -59,27 +64,5 @@ public class PageInfo {
 
     public void setPageToUrl(Function<Integer, String> pageToUrl) {
         this.pageToUrl = pageToUrl;
-    }
-
-    public IntStream getPageLinks() {
-        if (getLastPage() <= 5) {
-            return IntStream.range(1, getLastPage() + 1);
-        } else {
-            if (getCurrentPage() <= 3) {
-                return concat(IntStream.range(1, 5), IntStream.of(0), IntStream.of(getLastPage() + 1));
-            } else if (getCurrentPage() < getLastPage() - 2) {
-                return concat(IntStream.of(1), IntStream.of(0), IntStream.range(getCurrentPage() - 1, getCurrentPage() + 2), IntStream.of(getLastPage() + 1));
-            } else {
-                return concat(IntStream.of(1), IntStream.of(0), IntStream.range(getCurrentPage(), getLastPage() + 1));
-            }
-        }
-    }
-
-    private IntStream concat(IntStream... streams) {
-        IntStream result = streams[0];
-        for (int i = 1; i < streams.length; i++) {
-            result = IntStream.concat(result, streams[i]);
-        }
-        return result;
     }
 }
