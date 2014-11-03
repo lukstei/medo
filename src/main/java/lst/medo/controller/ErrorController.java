@@ -17,7 +17,9 @@ public class ErrorController implements org.springframework.boot.autoconfigure.w
         Throwable e = ((Throwable) req.getAttribute("javax.servlet.error.exception"));
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
+        if(e != null) {
+            e.printStackTrace(pw);
+        }
 
         model.addAttribute("uri", req.getRequestURI());
         model.addAttribute("error", e);

@@ -1,3 +1,5 @@
+drop table authorities;
+drop table users;
 drop table article;
 drop table author;
 drop table media;

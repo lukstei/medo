@@ -1,11 +1,14 @@
 package lst.medo.controller;
 
+import lst.medo.config.Role;
+import lst.medo.config.SecurityConfig;
 import lst.medo.config.UrlCreator;
 import lst.medo.config.Util;
 import lst.medo.dao.ArticleDao;
 import lst.medo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -25,6 +28,12 @@ import java.util.stream.Stream;
 public class ArticlesController {
     @Autowired ArticleDao mArticleDao;
     @Autowired HttpServletRequest mRequest;
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(ModelMap model) {
+        return "login";
+    }
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(ModelMap model) {
@@ -64,6 +73,7 @@ public class ArticlesController {
         return "article/search";
     }
 
+    @Secured(Role.ROLE_ARTICLE_CREATE)
     @RequestMapping(value = "/articles/new", method = RequestMethod.GET)
     public String createNew(ModelMap model) {
         model.addAttribute("isNew", true);
@@ -73,6 +83,7 @@ public class ArticlesController {
         return "article/form";
     }
 
+    @Secured(Role.ROLE_ARTICLE_EDIT + "as")
     @RequestMapping(value = "/articles/{id}/edit", method = RequestMethod.GET)
     public String edit(ModelMap model, @PathVariable int id) {
         model.addAttribute("isNew", false);
@@ -80,6 +91,7 @@ public class ArticlesController {
         return "article/form";
     }
 
+    @Secured(Role.ROLE_ARTICLE_CREATE)
     @RequestMapping(value = "/articles", method = RequestMethod.POST)
     public String create(ModelMap model,
                          @ModelAttribute("article") @Valid Article article,
@@ -94,6 +106,7 @@ public class ArticlesController {
         return "redirect:/articles/" + article.getId();
     }
 
+    @Secured(Role.ROLE_ARTICLE_EDIT)
     @RequestMapping(value = "/articles/{id}", method = RequestMethod.POST)
     public String update(ModelMap model,
                          @PathVariable int id,
@@ -110,6 +123,7 @@ public class ArticlesController {
         return "redirect:/articles/" + article.getId();
     }
 
+    @Secured(Role.ROLE_ARTICLE_EDIT)
     @RequestMapping(value = "/articles/{id}/delete", method = RequestMethod.POST)
     public String delete(ModelMap model,
                          @PathVariable int id,

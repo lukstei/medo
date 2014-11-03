@@ -32,10 +32,10 @@
                             <a th:href="@{/articles/} + ${article.id} + '/edit'">
                                 <button class="btn btn-sm btn-default">Ändern</button>
                             </a>
-                            <form action="post" th:action="@{/articles/} + ${article.id} + '/delete'"
+                            <form method="post" th:action="@{/articles/} + ${article.id} + '/delete'"
                                   style="display:inline;">
                                 <a>
-                                    <button class="btn btn-danger btn-sm" id="delete-btn">Löschen</button>
+                                    <input type="submit" class="btn btn-danger btn-sm" id="delete-btn" value="Löschen" />
                                 </a>
                             </form>
                         </span>

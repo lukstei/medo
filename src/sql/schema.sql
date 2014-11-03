@@ -1,3 +1,18 @@
+create table users(
+  username character varying not null primary key,
+  password character varying not null,
+  enabled boolean not null
+);
+
+create table authorities (
+  username character varying not null,
+  authority character varying not null,
+  constraint fk_authorities_users foreign key(username) references users(username)
+);
+create unique index ix_auth_username on authorities (username,authority);
+
+
+
 create table article_type
 (
   id int primary key not null,

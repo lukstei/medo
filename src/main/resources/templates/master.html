@@ -32,6 +32,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </a>
+
+        <div class="user user-menu pull-right">
+            <i class="glyphicon glyphicon-user"></i>
+            <span>Jane Doe</span>
+
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Logout"/>
+            </form>
+        </div>
     </nav>
 </header>
 <div class="wrapper row-offcanvas row-offcanvas-left">

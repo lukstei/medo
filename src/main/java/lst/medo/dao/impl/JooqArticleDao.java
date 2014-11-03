@@ -109,7 +109,6 @@ public class JooqArticleDao implements ArticleDao {
 
         int count = where.fetchCount();
         List<Article> articles = where
-                //.groupBy(ARTICLE.ID, ARTICLE_TYPE.NAME, AUTHOR.NAME, ARTICLE.ARTICLE_DATE, MEDIA.NAME)
                 .orderBy(ARTICLE.ARTICLE_DATE.desc())
                 .limit(params.getPage().getItemsPerPage())
                 .offset(params.getPage().getOffset())

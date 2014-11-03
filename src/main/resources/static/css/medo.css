@@ -8,6 +8,13 @@
 }
 
 .form-group.required label:after {
-    content:"*";
-    color:red;
+    content: "*";
+    color: red;
+}
+
+.alert-login {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
 }
