@@ -12,15 +12,8 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import javax.sql.DataSource;
-import java.security.AuthProvider;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 
 @Configuration
@@ -33,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         String[] roleNames = ((String[]) Role.ROLES.toArray());
 
         auth.jdbcAuthentication()
+                .passwordEncoder(passwordEncoder())
                 //.withUser("admin").password("medo").roles(roleNames).and()
                 .dataSource(mDataSource);
     }
@@ -40,30 +34,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/img/**", "/fonts/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll();
+                    .antMatchers("/css/**", "/js/**", "/img/**", "/fonts/**", "/login").permitAll()
+                    .anyRequest().authenticated()
+                .and().formLogin().loginPage("/login").permitAll()
+                .and().logout().logoutSuccessUrl("/login?logout").permitAll();
     }
 
-    /**
-     * <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-
-     <bean id="authProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
-     <property name="userDetailsService" ref="yourJdbcUserService" />
-     <property name="passwordEncoder" ref="encoder" />
-     </bean>
-     */
-
-    @Bean PasswordEncoder encoder() {
+    @Bean PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean AuthenticationProvider authProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(encoder());
+        provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(new JdbcDaoImpl());
         return provider;
     }

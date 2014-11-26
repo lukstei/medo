@@ -11,7 +11,10 @@ create table authorities (
 );
 create unique index ix_auth_username on authorities (username,authority);
 
+insert into users (username, password, enabled) values ('admin', '$2a$10$H2cY7hgjmi2g94KcvD0xFO88gnLuZKBWzdAXGa8f4x841ghSJgbk.', true);
 
+insert into authorities (username, authority) values ('admin', 'ROLE_article.create');
+insert into authorities (username, authority) values ('admin', 'ROLE_article.edit');
 
 create table article_type
 (

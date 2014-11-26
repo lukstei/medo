@@ -1,11 +1,13 @@
 package lst.medo.controller;
 
 import lst.medo.config.Role;
-import lst.medo.config.SecurityConfig;
 import lst.medo.config.UrlCreator;
 import lst.medo.config.Util;
 import lst.medo.dao.ArticleDao;
-import lst.medo.model.*;
+import lst.medo.model.Article;
+import lst.medo.model.DateRange;
+import lst.medo.model.PageInfo;
+import lst.medo.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.annotation.Secured;
@@ -20,7 +22,6 @@ import javax.validation.Valid;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,13 +31,13 @@ public class ArticlesController {
     @Autowired HttpServletRequest mRequest;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(ModelMap model) {
+    public String login() {
         return "login";
     }
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(ModelMap model) {
+    public String index() {
         return "article/search";
     }
 
@@ -125,8 +126,7 @@ public class ArticlesController {
 
     @Secured(Role.ROLE_ARTICLE_EDIT)
     @RequestMapping(value = "/articles/{id}/delete", method = RequestMethod.POST)
-    public String delete(ModelMap model,
-                         @PathVariable int id,
+    public String delete(@PathVariable int id,
                          RedirectAttributes redirectAttributes) {
         mArticleDao.delete(id);
 

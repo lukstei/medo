@@ -1,10 +1,7 @@
 package lst.medo;
 
-import lst.medo.config.Config;
-import lst.medo.config.WebConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +10,11 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan
 public class Server {
     public static void main(String[] args) {
+        if (args.length > 0 && (args[0].equals("--help") || args[0].equals("-h"))) {
+            System.err.println("Usage: " + Server.class.getName() + " [--url=jdbc:postgresql://ip/dbname] [--user=postgres] [--port=5432] [--password=]");
+            return;
+        }
+
         SpringApplication.run(Server.class, args);
     }
 }

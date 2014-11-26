@@ -57,6 +57,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework:spring-jdbc")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity3")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -70,7 +71,7 @@ idea {
 task server(dependsOn: "stage", type: JavaExec ) {
     main = 'lst.medo.Server'
     classpath = sourceSets.main.runtimeClasspath
-    args System.getProperty("exec.args").split()
+    args System.getProperty("exec.args")?.split() ?: ""
 }
 
 task stage(dependsOn: "build")
