@@ -33,6 +33,7 @@ public class Keys {
 	public static final org.jooq.UniqueKey<lst.medo.generated.tables.records.AuthorRecord> AUTHOR_NAME_KEY = UniqueKeys0.AUTHOR_NAME_KEY;
 	public static final org.jooq.UniqueKey<lst.medo.generated.tables.records.MediaRecord> MEDIA_PKEY = UniqueKeys0.MEDIA_PKEY;
 	public static final org.jooq.UniqueKey<lst.medo.generated.tables.records.MediaRecord> MEDIA_NAME_KEY = UniqueKeys0.MEDIA_NAME_KEY;
+	public static final org.jooq.UniqueKey<lst.medo.generated.tables.records.UsersRecord> USERS_PKEY = UniqueKeys0.USERS_PKEY;
 
 	// -------------------------------------------------------------------------
 	// FOREIGN KEY definitions
@@ -40,6 +41,8 @@ public class Keys {
 
 	public static final org.jooq.ForeignKey<lst.medo.generated.tables.records.ArticleRecord, lst.medo.generated.tables.records.ArticleTypeRecord> ARTICLE__ARTICLE_ARTICLE_TYPE_FKEY = ForeignKeys0.ARTICLE__ARTICLE_ARTICLE_TYPE_FKEY;
 	public static final org.jooq.ForeignKey<lst.medo.generated.tables.records.ArticleRecord, lst.medo.generated.tables.records.AuthorRecord> ARTICLE__ARTICLE_AUTHOR_FKEY = ForeignKeys0.ARTICLE__ARTICLE_AUTHOR_FKEY;
+	public static final org.jooq.ForeignKey<lst.medo.generated.tables.records.ArticleRecord, lst.medo.generated.tables.records.MediaRecord> ARTICLE__ARTICLE_MEDIA_FKEY = ForeignKeys0.ARTICLE__ARTICLE_MEDIA_FKEY;
+	public static final org.jooq.ForeignKey<lst.medo.generated.tables.records.AuthoritiesRecord, lst.medo.generated.tables.records.UsersRecord> AUTHORITIES__FK_AUTHORITIES_USERS = ForeignKeys0.AUTHORITIES__FK_AUTHORITIES_USERS;
 
 	// -------------------------------------------------------------------------
 	// [#1459] distribute members to avoid static initialisers > 64kb
@@ -59,10 +62,13 @@ public class Keys {
 		public static final org.jooq.UniqueKey<lst.medo.generated.tables.records.AuthorRecord> AUTHOR_NAME_KEY = createUniqueKey(lst.medo.generated.tables.Author.AUTHOR, lst.medo.generated.tables.Author.AUTHOR.NAME);
 		public static final org.jooq.UniqueKey<lst.medo.generated.tables.records.MediaRecord> MEDIA_PKEY = createUniqueKey(lst.medo.generated.tables.Media.MEDIA, lst.medo.generated.tables.Media.MEDIA.ID);
 		public static final org.jooq.UniqueKey<lst.medo.generated.tables.records.MediaRecord> MEDIA_NAME_KEY = createUniqueKey(lst.medo.generated.tables.Media.MEDIA, lst.medo.generated.tables.Media.MEDIA.NAME);
+		public static final org.jooq.UniqueKey<lst.medo.generated.tables.records.UsersRecord> USERS_PKEY = createUniqueKey(lst.medo.generated.tables.Users.USERS, lst.medo.generated.tables.Users.USERS.USERNAME);
 	}
 
 	private static class ForeignKeys0 extends org.jooq.impl.AbstractKeys {
 		public static final org.jooq.ForeignKey<lst.medo.generated.tables.records.ArticleRecord, lst.medo.generated.tables.records.ArticleTypeRecord> ARTICLE__ARTICLE_ARTICLE_TYPE_FKEY = createForeignKey(lst.medo.generated.Keys.ARTICLE_TYPE_PKEY, lst.medo.generated.tables.Article.ARTICLE, lst.medo.generated.tables.Article.ARTICLE.ARTICLE_TYPE);
 		public static final org.jooq.ForeignKey<lst.medo.generated.tables.records.ArticleRecord, lst.medo.generated.tables.records.AuthorRecord> ARTICLE__ARTICLE_AUTHOR_FKEY = createForeignKey(lst.medo.generated.Keys.AUTHOR_PKEY, lst.medo.generated.tables.Article.ARTICLE, lst.medo.generated.tables.Article.ARTICLE.AUTHOR);
+		public static final org.jooq.ForeignKey<lst.medo.generated.tables.records.ArticleRecord, lst.medo.generated.tables.records.MediaRecord> ARTICLE__ARTICLE_MEDIA_FKEY = createForeignKey(lst.medo.generated.Keys.MEDIA_PKEY, lst.medo.generated.tables.Article.ARTICLE, lst.medo.generated.tables.Article.ARTICLE.MEDIA);
+		public static final org.jooq.ForeignKey<lst.medo.generated.tables.records.AuthoritiesRecord, lst.medo.generated.tables.records.UsersRecord> AUTHORITIES__FK_AUTHORITIES_USERS = createForeignKey(lst.medo.generated.Keys.USERS_PKEY, lst.medo.generated.tables.Authorities.AUTHORITIES, lst.medo.generated.tables.Authorities.AUTHORITIES.USERNAME);
 	}
 }

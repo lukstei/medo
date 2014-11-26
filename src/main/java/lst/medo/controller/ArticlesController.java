@@ -84,7 +84,7 @@ public class ArticlesController {
         return "article/form";
     }
 
-    @Secured(Role.ROLE_ARTICLE_EDIT + "as")
+    @Secured(Role.ROLE_ARTICLE_EDIT)
     @RequestMapping(value = "/articles/{id}/edit", method = RequestMethod.GET)
     public String edit(ModelMap model, @PathVariable int id) {
         model.addAttribute("isNew", false);

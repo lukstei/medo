@@ -3,9 +3,11 @@ package lst.medo.config;
 import lst.medo.dao.ArticleDao;
 import lst.medo.dao.AuthorDao;
 import lst.medo.dao.MediaDao;
+import lst.medo.dao.UserDao;
 import lst.medo.dao.impl.JooqArticleDao;
 import lst.medo.dao.impl.JooqAuthorDao;
 import lst.medo.dao.impl.JooqMediaDao;
+import lst.medo.dao.impl.JooqUserDao;
 import lst.medo.model.DateRange;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
@@ -59,5 +61,9 @@ public class Config  {
 
     @Bean AuthorDao authorDao(DSLContext context) {
         return new JooqAuthorDao(context);
+    }
+
+    @Bean UserDao userDao(DSLContext context) {
+        return new JooqUserDao(context);
     }
 }

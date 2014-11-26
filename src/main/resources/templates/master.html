@@ -35,7 +35,7 @@
 
         <div class="navbar-right">
             <ul class="nav navbar-nav">
-                <li class="dropdown user user-menu open">
+                <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="glyphicon glyphicon-user"></i>
                         <span><th:block sec:authentication="name"/> <i class="caret"></i></span>
@@ -82,6 +82,16 @@
                     <a th:href="@{/articles/new}">
                         <i class="fa fa-edit"></i><span>Artikel anlegen</span>
                     </a>
+                </li>
+
+                <li class="treeview" sec:authorize="hasRole('admin')">
+                    <a href="#">
+                        <i class="fa fa-edit"></i> <span>Admin</span>
+                        <i class="fa pull-right fa-angle-down"></i>
+                    </a>
+                    <ul class="treeview-menu" style="display: block;">
+                        <li th:classappend="(${title} == 'userlist')? 'active'"><a th:href="@{/admin/users}"><i class="fa fa-angle-double-right"></i>User</a></li>
+                    </ul>
                 </li>
             </ul>
         </section>

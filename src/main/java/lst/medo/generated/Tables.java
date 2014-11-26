@@ -29,7 +29,17 @@ public class Tables {
 	public static final lst.medo.generated.tables.Author AUTHOR = lst.medo.generated.tables.Author.AUTHOR;
 
 	/**
+	 * The table public.authorities
+	 */
+	public static final lst.medo.generated.tables.Authorities AUTHORITIES = lst.medo.generated.tables.Authorities.AUTHORITIES;
+
+	/**
 	 * The table public.media
 	 */
 	public static final lst.medo.generated.tables.Media MEDIA = lst.medo.generated.tables.Media.MEDIA;
+
+	/**
+	 * The table public.users
+	 */
+	public static final lst.medo.generated.tables.Users USERS = lst.medo.generated.tables.Users.USERS;
 }

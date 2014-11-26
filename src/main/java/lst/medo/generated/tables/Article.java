@@ -11,7 +11,7 @@ package lst.medo.generated.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Article extends org.jooq.impl.TableImpl<lst.medo.generated.tables.records.ArticleRecord> {
 
-	private static final long serialVersionUID = -1267052707;
+	private static final long serialVersionUID = 1975394341;
 
 	/**
 	 * The singleton instance of <code>public.article</code>
@@ -112,7 +112,7 @@ public class Article extends org.jooq.impl.TableImpl<lst.medo.generated.tables.r
 	 */
 	@Override
 	public java.util.List<org.jooq.ForeignKey<lst.medo.generated.tables.records.ArticleRecord, ?>> getReferences() {
-		return java.util.Arrays.<org.jooq.ForeignKey<lst.medo.generated.tables.records.ArticleRecord, ?>>asList(lst.medo.generated.Keys.ARTICLE__ARTICLE_ARTICLE_TYPE_FKEY, lst.medo.generated.Keys.ARTICLE__ARTICLE_AUTHOR_FKEY);
+		return java.util.Arrays.<org.jooq.ForeignKey<lst.medo.generated.tables.records.ArticleRecord, ?>>asList(lst.medo.generated.Keys.ARTICLE__ARTICLE_ARTICLE_TYPE_FKEY, lst.medo.generated.Keys.ARTICLE__ARTICLE_AUTHOR_FKEY, lst.medo.generated.Keys.ARTICLE__ARTICLE_MEDIA_FKEY);
 	}
 
 	/**

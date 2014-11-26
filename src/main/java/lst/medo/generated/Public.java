@@ -11,7 +11,7 @@ package lst.medo.generated;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends org.jooq.impl.SchemaImpl {
 
-	private static final long serialVersionUID = -1724977422;
+	private static final long serialVersionUID = 896943570;
 
 	/**
 	 * The singleton instance of <code>public</code>
@@ -51,6 +51,8 @@ public class Public extends org.jooq.impl.SchemaImpl {
 			lst.medo.generated.tables.Article.ARTICLE,
 			lst.medo.generated.tables.ArticleType.ARTICLE_TYPE,
 			lst.medo.generated.tables.Author.AUTHOR,
-			lst.medo.generated.tables.Media.MEDIA);
+			lst.medo.generated.tables.Authorities.AUTHORITIES,
+			lst.medo.generated.tables.Media.MEDIA,
+			lst.medo.generated.tables.Users.USERS);
 	}
 }
