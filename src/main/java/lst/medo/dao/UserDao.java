@@ -11,4 +11,10 @@ public interface UserDao {
      * @return all users
      */
     Collection<? extends UserDetails> findAll();
+
+
+    /**
+     * @return given user
+     */
+    UserDetails find(String username);
 }

@@ -122,11 +122,16 @@
                                 </tr>
                                 <tr th:each="u : ${users}">
                                     <td th:text="${u.username}">Name</td>
-                                    <td><input ttype="text"
-                                               th:value="${#strings.listJoin(u.authorities, ',')}"
-                                               class="roles-input"/></td>
+                                    <td>
+                                        <form class="roles-form" th:action="@{/admin/users/{user}(user=${u.username})}" method="post">
+                                            <input type="text" name="roles" placeholder="Rollen"
+                                                   th:value="${#strings.listJoin(u.authorities, ',')}"
+                                                   class="roles-input"/>
+                                        </form>
+                                    </td>
+
                                     <td th:unless="${u.username == 'admin'}">
-                                        <button class="btn btn-sm btn-primary btn-flat">Speichern</button>
+                                        <button class="save-roles btn btn-sm btn-primary btn-flat">Speichern</button>
                                         <form th:attr="data-user=${u.username}" method="post"
                                               th:action="@{/admin/users/{name}/delete(name=${u.username})}">
                                             <button class="delete-user btn btn-sm btn-danger btn-flat">Löschen</button>
@@ -179,6 +184,12 @@
             if (d === true) {
                 form.submit();
             }
+        });
+
+        $('.save-roles').click(function (e) {
+            e.preventDefault();
+            var tr = $(e.target).closest("tr");
+            $(tr).find(".roles-form").submit();
         });
 
         $('.roles-input').tagsinput({

@@ -6,6 +6,9 @@ import lst.medo.dao.UserDao;
 import lst.medo.model.SimpleUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Controller
 public class AdminController {
@@ -62,5 +71,71 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("success", "Benutzer gelöscht");
         mUserDetailsManager.deleteUser(username);
         return "redirect:/admin/users";
+    }
+
+    @Secured(value = Role.ROLE_ADMIN)
+    @RequestMapping(value = "/admin/users/{name}", method = RequestMethod.POST)
+    public String updateUser(ModelMap model,
+                             @PathVariable("name") String username,
+                             @RequestParam("roles") String roles,
+                             RedirectAttributes redirectAttributes) {
+
+        if (mUserDetailsManager.userExists(username)) {
+            String[] newRoles = Util.isEmpty(roles) ? new String[0] : roles.split(",");
+
+            UserDetails userDetails = mUserDao.find(username);
+
+            List<GrantedAuthority> authorities = Arrays.asList(newRoles).stream()
+                    .map(String::trim)
+                    .filter(Role.ROLES::contains)
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(toList());
+
+            mUserDetailsManager.updateUser(new UserDetailsProxy(userDetails) {
+                @Override public Collection<? extends GrantedAuthority> getAuthorities() {
+                    return authorities;
+                }
+            });
+
+            redirectAttributes.addFlashAttribute("success", "Änderungen gespeichert");
+        }
+
+        return "redirect:/admin/users";
+    }
+
+    static class UserDetailsProxy implements UserDetails {
+        UserDetails mUserDetails;
+
+        public UserDetailsProxy(UserDetails userDetails) {
+            mUserDetails = userDetails;
+        }
+
+        @Override public Collection<? extends GrantedAuthority> getAuthorities() {
+            return mUserDetails.getAuthorities();
+        }
+
+        @Override public String getPassword() {
+            return mUserDetails.getPassword();
+        }
+
+        @Override public String getUsername() {
+            return mUserDetails.getUsername();
+        }
+
+        @Override public boolean isAccountNonExpired() {
+            return mUserDetails.isAccountNonExpired();
+        }
+
+        @Override public boolean isAccountNonLocked() {
+            return mUserDetails.isAccountNonLocked();
+        }
+
+        @Override public boolean isCredentialsNonExpired() {
+            return mUserDetails.isCredentialsNonExpired();
+        }
+
+        @Override public boolean isEnabled() {
+            return mUserDetails.isEnabled();
+        }
     }
 }

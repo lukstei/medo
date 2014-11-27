@@ -10,10 +10,18 @@ import java.util.List;
 public class SimpleUserDetails implements UserDetails {
     String mUsername;
     String mPassword;
+    boolean mEnabled;
+
     List<GrantedAuthority> mGrantedAuthorities = new ArrayList<>();
 
     public SimpleUserDetails(String username) {
         mUsername = username;
+    }
+
+    public SimpleUserDetails(String username, String password, boolean enabled) {
+        mUsername = username;
+        mPassword = password;
+        mEnabled = enabled;
     }
 
     @Override public Collection<GrantedAuthority> getAuthorities() {
@@ -49,8 +57,10 @@ public class SimpleUserDetails implements UserDetails {
     }
 
     @Override public boolean isEnabled() {
-        return true;
+        return mEnabled;
     }
 
-
+    public void setEnabled(boolean enabled) {
+        mEnabled = enabled;
+    }
 }

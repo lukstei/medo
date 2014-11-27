@@ -37,4 +37,21 @@ public class JooqUserDao implements UserDao {
 
         return users.values();
     }
+
+    @Override public UserDetails find(String username) {
+        SimpleUserDetails details = new SimpleUserDetails(username);
+        mContext.select(USERS.USERNAME, USERS.ENABLED, USERS.PASSWORD, AUTHORITIES.AUTHORITY).from(USERS)
+                .leftOuterJoin(AUTHORITIES).on(USERS.USERNAME.eq(AUTHORITIES.USERNAME))
+                .where(USERS.USERNAME.eq(username))
+                .fetch(u -> {
+                    details.setPassword(u.getValue(USERS.PASSWORD));
+                    details.setEnabled(u.getValue(USERS.ENABLED));
+                    String role = u.getValue(AUTHORITIES.AUTHORITY);
+                    if (role != null) {
+                        details.getAuthorities().add(new SimpleGrantedAuthority(role));
+                    }
+                    return details;
+                });
+        return details;
+    }
 }

@@ -35,7 +35,6 @@ public class ArticlesController {
         return "login";
     }
 
-
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
         return "article/search";
