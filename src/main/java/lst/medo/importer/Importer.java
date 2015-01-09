@@ -49,6 +49,11 @@ public class Importer implements CommandLineRunner {
         startImport(Paths.get(path));
     }
 
+    /**
+     * Starts the import from the given directory
+     * @param path the diretory
+     * @throws IOException
+     */
     void startImport(Path path) throws IOException {
         try (DirectoryStream<Path> paths = Files.newDirectoryStream(path)) {
             for (Path file : paths) {
@@ -68,6 +73,11 @@ public class Importer implements CommandLineRunner {
     // Kommentar_2014-01-02_Standard_Gudrun Harrer
     Pattern mPattern = Pattern.compile("^(Kommentar|Interview)_([0-9]{4}-[0-9]{2}-[0-9]{2})_([^\\._]+)_?([^\\._]+)");
 
+    /**
+     * Imports one file
+     *
+     * @param path file path
+     */
     void importFile(Path path) {
         String fileName = path.getFileName().toString();
         Matcher matcher = mPattern.matcher(fileName);

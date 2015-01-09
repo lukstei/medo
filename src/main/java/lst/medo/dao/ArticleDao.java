@@ -9,15 +9,44 @@ import java.time.LocalDate;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * Article dao
+ */
 public interface ArticleDao {
+    /**
+     * Saves an article.
+     *
+     * @param article the article
+     * @return the saved article
+     */
     Article save(Article article);
 
+    /**
+     * Finds all article matching the params.
+     *
+     * @param params the parameters
+     * @return article result list
+     */
     Result<Article> find(Params params);
 
+    /**
+     * Finds an article by id.
+     *
+     * @param id article id
+     * @return article or null
+     */
     @Nullable Article findById(int id);
 
+    /**
+     * Deletes an article by id.
+     *
+     * @param id article id
+     */
     void delete(int id);
 
+    /**
+     * Article search params
+     */
     class Params {
         @Nullable Integer id;
         @Nullable String text;

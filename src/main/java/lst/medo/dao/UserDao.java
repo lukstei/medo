@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.List;
 
 
+/**
+ * User dao
+ */
 public interface UserDao {
     /**
      * @return all users
@@ -14,7 +17,7 @@ public interface UserDao {
 
 
     /**
-     * @return given user
+     * @return the given user or null
      */
     UserDetails find(String username);
 }

@@ -2,6 +2,10 @@ package lst.medo.model;
 
 import java.util.Date;
 
+/**
+ * Represents a date range.
+ * Invariant condition: from <= to
+ */
 public class DateRange {
     Date from;
     Date to;

@@ -1,5 +1,8 @@
 package lst.medo.model;
 
+/**
+ * Media model
+ */
 public class Media {
     int id;
     String name;

@@ -11,6 +11,10 @@ import org.springframework.format.datetime.DateTimeFormatAnnotationFormatterFact
 import java.text.ParseException;
 import java.util.*;
 
+/**
+ * This class implements a converter for our DateRange class,
+ * for marshalling and unmarshalling from query string parameters.
+ */
 public class DateRangeFormatter implements Formatter<DateRange> {
     @SuppressWarnings("unchecked")
     public static class DateRangeAnnotationFormatterFactory implements AnnotationFormatterFactory<DateTimeFormat> {

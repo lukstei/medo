@@ -116,12 +116,18 @@
                                 <div class="col-xs-6">
                                     <ul class="pagination">
                                         <li class="prev" th:classappend="(!${page.hasPrevious})? 'disabled'">
-                                            <a th:href="@{${page.hasPrevious} ? ${page.pageToUrl.apply(page.previousPage)}}">← Zurück</a>
+                                            <a th:href="@{${page.hasPrevious} ? ${pageToUrl.apply(page.previousPage)}}">← Zurück</a>
                                         </li>
-                                        <li class="active"><a th:href="@{${page.pageToUrl.apply(page.currentPage)}}"
-                                                              th:text="${page.currentPage}">1</a></li>
+                                        <li th:if="${page.hasPrevious}">
+                                            <a th:href="${pageToUrl.apply(page.currentPage - 1)}" th:text="${page.currentPage - 1}">1</a>
+                                        </li>
+                                        <li class="active"><a th:href="@{${pageToUrl.apply(page.currentPage)}}"
+                                                              th:text="${page.currentPage}">2</a></li>
+                                        <li th:if="${page.hasNext}">
+                                            <a th:href="${pageToUrl.apply(page.currentPage + 1)}" th:text="${page.currentPage + 1}">3</a>
+                                        </li>
                                         <li class="next" th:classappend="(!${page.hasNext})? 'disabled'">
-                                            <a th:href="@{${page.hasNext} ? ${page.pageToUrl.apply(page.nextPage)}}">Weiter → </a>
+                                            <a th:href="@{${page.hasNext} ? ${pageToUrl.apply(page.nextPage)}}">Weiter → </a>
                                         </li>
                                     </ul>
                                 </div>

@@ -65,7 +65,7 @@ public class ArticlesController {
         model.addAttribute("result", result.getItems());
 
         PageInfo pageInfo = new PageInfo(params.getPage(), result.getCount());
-        pageInfo.setPageToUrl(UrlCreator.urlSettingQueryParam(mRequest, "page"));
+        model.addAttribute("pageToUrl", UrlCreator.urlSettingQueryParam(mRequest, "page"));
 
         model.addAttribute("page", pageInfo);
         model.addAttribute("search", s);

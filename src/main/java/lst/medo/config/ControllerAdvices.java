@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ControllerAdvices {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
+        // treat empty parameter strings as null
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 

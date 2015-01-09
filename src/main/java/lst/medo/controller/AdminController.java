@@ -25,12 +25,18 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Admin controller
+ */
 @Controller
 public class AdminController {
     @Autowired PasswordEncoder mPasswordEncoder;
     @Autowired UserDetailsManager mUserDetailsManager;
     @Autowired UserDao mUserDao;
 
+    /**
+     * User management action
+     */
     @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "/admin/users", method = RequestMethod.GET)
     public String users(ModelMap model) {
@@ -40,6 +46,9 @@ public class AdminController {
         return "admin/userlist";
     }
 
+    /**
+     * Create user action
+     */
     @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "/admin/users", method = RequestMethod.POST)
     public String createUser(ModelMap model,
@@ -63,9 +72,12 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    /**
+     * Delete user action
+     */
     @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "/admin/users/{name}/delete", method = RequestMethod.POST)
-    public String createUser(ModelMap model,
+    public String deleteUser(ModelMap model,
                              @PathVariable("name") String username,
                              RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("success", "Benutzer gelöscht");
@@ -73,6 +85,9 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    /**
+     * Update user action
+     */
     @Secured(value = Role.ROLE_ADMIN)
     @RequestMapping(value = "/admin/users/{name}", method = RequestMethod.POST)
     public String updateUser(ModelMap model,
@@ -80,7 +95,7 @@ public class AdminController {
                              @RequestParam("roles") String roles,
                              RedirectAttributes redirectAttributes) {
 
-        if (mUserDetailsManager.userExists(username)) {
+        if (mUserDetailsManager.userExists(username) && !username.equals("admin")) {
             String[] newRoles = Util.isEmpty(roles) ? new String[0] : roles.split(",");
 
             UserDetails userDetails = mUserDao.find(username);

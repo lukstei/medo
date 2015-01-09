@@ -11,6 +11,9 @@ import java.time.LocalDate;
 
 import static java.lang.String.format;
 
+/**
+ * Article model
+ */
 public class Article {
     @Nullable Integer id;
     @NotEmpty String type;

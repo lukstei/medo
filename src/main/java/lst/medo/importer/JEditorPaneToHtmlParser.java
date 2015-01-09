@@ -22,15 +22,7 @@ public class JEditorPaneToHtmlParser implements ToHtmlParser {
         } catch (Exception ex) {
             //log.error("Error during converting rtf 2 html!", ex);
         }
-        String html = writer.toString();
-        Matcher m = htmlTrimPattern.matcher(html);
-
-        // html content
-        //html=m.group(1);
-
-        //System.out.println(rtf+"\nrtf->html\n"+html);
-
-        return html;
+        return writer.toString();
     }
 
     @Override public boolean canParse(Path file) {
