@@ -1,0 +1,107 @@
+Medo
+====
+
+Medo ist ein Informationssystem zur Verwaltung von Artikeln der Mediendokumentation des Österreichischen Parlaments. Die Mediendokumentation archiviert Medienberichte zu den Themen Parlamentarismus, Verfassung und Recht (vgl. http://www.parlament.gv.at/SERV/ANG/MED/).
+Ursprünglich wurden Beiträge in einer standardisierten Ordnerstruktur mittels RTF Dokumenten gespeichert. Ziel dieses Projektes war es, eine Informationssystem zur Verwaltung und Indizierung dieser Beiträge oder Artikel zu entwickeln.
+
+Das System bietet folgende Features:
+
+- Automatischer Import der RTF aus der standardisierten Ordnerstruktur in die Datenbank
+- UI für das Durchsuchen der Dokumente (Volltextsuche)
+- UI für das Anlegen, Editieren und Löschen von Beiträgen
+- Benutzerverwaltung und Rollensystem um verschiedene Arten von Benutzer zu unterstützen
+
+Beschreibung des User Interfaces
+================================
+
+Zum Oberfläche gelangt man durch starten des Browsers, defaultmäßig ist die Adresse des Servers http://localhost:8080/.
+Um sich auszuloggen, findet man rechts oben nach klick auf seinen Benutzernamen, den Button "Logout".
+Die Benutzeroberfläche ist "responsive", d.h. es kann ohne weiteres auch von einem Tablet oder Smartphone bedient werden.
+
+Login:
+Nach der Installation sind gibt es einen Benutzer mit dem Benutzernamen "admin" und dem Passwort "admin", andere Benutzer sind über die Oberfläche einzurichten.
+
+Suche:
+Die Suchoberfläche bietet eine konfortable Möglichkeit die Artikel zu durchsuchen.
+Die Felder "Person" und "Medium" besitzen eine Autocompletion Funktion, d.h. man braucht nur den Anfang eines Begriffes eingeben und das System macht automatisch Vorschläge. Gibt man z.B. "han" oder "has" in das Feld "Person" ein, schlägt das System automatisch "Hans Peter Haselsteiner" vor.
+Mit "Datum" schränkt man den Zeitraum der Veröffentlichung des Artikels ein (mit Datepicker).
+
+Artikel anlegen:
+Hier kann ein neuer Artikel in das System eingetragen werden.
+Die Felder "Person" und "Medium" besitzen eine Autocompletion Funktion (siehe Suche).
+Das Textfeld bietet einen HTML Editor, hier kann man komfortabel den Artikel formatieren, wie aus gängigen Textverarbeitungsprogrammen gewöhnt.
+
+Artikel editieren:
+Es wird die gleiche Oberfläche wie Artikel anlegen verwendet.
+
+Admin:
+
+Userverwaltung:
+	Rollen: Es werden alle mögliche Rollen aufgelistet und beschrieben
+	Neuer User: Hier kann ein neuer User angelegt werden
+	User bearbeiten: User bearbeiten, das Rollen Feld bietet eine Autocompletionfunktion
+
+
+Technische Übersicht
+====================
+
+Das Projekt wurde mit Java 8 und dem Spring Web-Mvc Framework umgesetzt. Als Datenbank wurde Postgresql mit dessen Volltextsuchfeatures verwendet. Als Buildsystem wird Gradle verwendet.
+Als JDBC Abstraktionsschicht wurde Jooq verwendet (http://www.jooq.org/).
+
+Installation
+============
+
+1) Schema (src/sql/schema.sql) in die Datenbank übertragen.
+2) (optional) Artikel importieren: java -jar medo.jar lst.medo.importer.Importer --help
+3) Server starten: java -jar medo.jar --url=jdbc:postgresql://url --user=user --port=http_port
+	
+	Argumente:
+		--url 		JDBC Connection Url
+		--user 		Datenbank Username
+		--password	Datenbank Passwort
+		--port 		HTTP Server Port
+
+Beschreibung der einzelnen Dateien und Klassen:
+
+src
+├── main
+│   ├── java
+│   │   └── lst
+│   │       └── medo
+│   │           ├── Server.java - Server Main File
+│   │           ├── config/ - Spring config und Util Klassen
+│   │           ├── controller
+│   │           │   ├── AdminController.java - MVC Controller für Admin Actions
+│   │           │   ├── AjaxController.java - MVC Controller für Ajax requests (über Javascript, für die Autocompletion Features) 
+│   │           │   ├── ArticlesController.java - MVC Controller der Artikel
+│   │           │   ├── ErrorController.java - Error Controller
+│   │           │   └── TestController.java - nur zum Testen verwendet
+│   │           ├── dao
+│   │           │   ├── ArticleDao.java - DAO interface
+│   │           │   ├── AuthorDao.java - DAO interface
+│   │           │   ├── MediaDao.java - DAO interface
+│   │           │   ├── UserDao.java - DAO interface
+│   │           │   └── impl/ - DAO Implementationen
+│   │           ├── generated - Die von Jooq aus dem Datenbankschema generierten Klassen (./gradlew generateJooq)
+│   │           ├── importer
+│   │           │   ├── Importer.java - Main Importer Klasse
+│   │           │   ├── JEditorPaneToHtmlParser.java - RTF zu HTML Converter
+│   │           │   ├── TikaToHtmlParser.java - RTF zu HTML Converter
+│   │           │   └── ToHtmlParser.java - RTF zu HTML Converter Interface
+│   │           └── model
+│   │               ├── Article.java
+│   │               ├── Author.java
+│   │               ├── DateRange.java
+│   │               ├── Media.java
+│   │               ├── Page.java
+│   │               ├── PageInfo.java
+│   │               ├── Result.java
+│   │               └── SimpleUserDetails.java
+│   └── resources
+│       ├── application.properties - Applikationskonfigurationsdatei
+│       ├── logback.xml - Logging config
+│       ├── static/ - Static web resources (css, js, fonts, images) 
+│       └── templates/ - Thymeleaf templates für die MVC-Views
+├── sql
+│   ├── drop.sql - Drop script
+│   └── schema.sql - Datenbankschema
