@@ -6,7 +6,7 @@ Ursprünglich wurden Beiträge in einer standardisierten Ordnerstruktur mittels 
 
 Das System bietet folgende Features:
 
-- Automatischer Import der RTF aus der standardisierten Ordnerstruktur in die Datenbank
+- Automatischer Import der RTF Dokumente aus der standardisierten Ordnerstruktur in die Datenbank
 - UI für das Durchsuchen der Dokumente (Volltextsuche)
 - UI für das Anlegen, Editieren und Löschen von Beiträgen
 - Benutzerverwaltung und Rollensystem um verschiedene Arten von Benutzer zu unterstützen
@@ -14,7 +14,7 @@ Das System bietet folgende Features:
 Beschreibung des User Interfaces
 ================================
 
-Zum Oberfläche gelangt man durch starten des Browsers, defaultmäßig ist die Adresse des Servers http://localhost:8080/.
+Zum Oberfläche gelangt man durch Starten des Browsers, defaultmäßig ist die Adresse des Servers http://localhost:8080/.
 Um sich auszuloggen, findet man rechts oben nach klick auf seinen Benutzernamen, den Button "Logout".
 Die Benutzeroberfläche ist "responsive", d.h. es kann ohne weiteres auch von einem Tablet oder Smartphone bedient werden.
 
@@ -22,7 +22,7 @@ Login:
 Nach der Installation sind gibt es einen Benutzer mit dem Benutzernamen "admin" und dem Passwort "admin", andere Benutzer sind über die Oberfläche einzurichten.
 
 Suche:
-Die Suchoberfläche bietet eine konfortable Möglichkeit die Artikel zu durchsuchen.
+Die Suchoberfläche bietet eine komfortable Möglichkeit die Artikel zu durchsuchen.
 Die Felder "Person" und "Medium" besitzen eine Autocompletion Funktion, d.h. man braucht nur den Anfang eines Begriffes eingeben und das System macht automatisch Vorschläge. Gibt man z.B. "han" oder "has" in das Feld "Person" ein, schlägt das System automatisch "Hans Peter Haselsteiner" vor.
 Mit "Datum" schränkt man den Zeitraum der Veröffentlichung des Artikels ein (mit Datepicker).
 
@@ -48,12 +48,28 @@ Technische Übersicht
 Das Projekt wurde mit Java 8 und dem Spring Web-Mvc Framework umgesetzt. Als Datenbank wurde Postgresql mit dessen Volltextsuchfeatures verwendet. Als Buildsystem wird Gradle verwendet.
 Als JDBC Abstraktionsschicht wurde Jooq verwendet (http://www.jooq.org/).
 
+Build
+=====
+
+Gradle wird mittels Wrapper (./gradlew), der automatisch die erforderliche Gradle Version installiert, aufgerufen.
+Alle verfügbaren Tasks können mit `./gradlew -q tasks` angezeigt werden.
+
+Tasks:
+stage - Kompilieren und als .jar verpacken
+jooqGenerate - Generierung der Jooq Klassen aus dem Datenbankschema
+server - Ausführen des Servers
+
+
 Installation
 ============
 
-1) Schema (src/sql/schema.sql) in die Datenbank übertragen.
-2) (optional) Artikel importieren: java -jar medo.jar lst.medo.importer.Importer --help
-3) Server starten: java -jar medo.jar --url=jdbc:postgresql://url --user=user --port=http_port
+- Java 8 muss installiert sein
+- Postgres Datenbank muss verfügbar sein (Lokal oder Remote)
+
+1) Kompilieren des Systems mit `./gradlew stage`
+2) Schema (src/sql/schema.sql) in die Datenbank übertragen.
+3) (optional) Artikel importieren: java -jar medo.jar lst.medo.importer.Importer --help
+4) Server starten: java -jar medo.jar --url=jdbc:postgresql://url --user=user --port=http_port
 	
 	Argumente:
 		--url 		JDBC Connection Url
@@ -61,7 +77,8 @@ Installation
 		--password	Datenbank Passwort
 		--port 		HTTP Server Port
 
-Beschreibung der einzelnen Dateien und Klassen:
+Beschreibung der einzelnen Dateien und Klassen
+==============================================
 
 src
 ├── main
@@ -72,7 +89,7 @@ src
 │   │           ├── config/ - Spring config und Util Klassen
 │   │           ├── controller
 │   │           │   ├── AdminController.java - MVC Controller für Admin Actions
-│   │           │   ├── AjaxController.java - MVC Controller für Ajax requests (über Javascript, für die Autocompletion Features) 
+│   │           │   ├── AjaxController.java - MVC Controller für Ajax Requests (über Javascript, für die Autocompletion Features) 
 │   │           │   ├── ArticlesController.java - MVC Controller der Artikel
 │   │           │   ├── ErrorController.java - Error Controller
 │   │           │   └── TestController.java - nur zum Testen verwendet
@@ -88,7 +105,7 @@ src
 │   │           │   ├── JEditorPaneToHtmlParser.java - RTF zu HTML Converter
 │   │           │   ├── TikaToHtmlParser.java - RTF zu HTML Converter
 │   │           │   └── ToHtmlParser.java - RTF zu HTML Converter Interface
-│   │           └── model
+│   │           └── model - Model Klassen
 │   │               ├── Article.java
 │   │               ├── Author.java
 │   │               ├── DateRange.java
