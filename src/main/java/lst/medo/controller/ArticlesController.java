@@ -18,12 +18,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 @Controller
 public class ArticlesController {
@@ -134,9 +138,15 @@ public class ArticlesController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/articles/{id}", method = RequestMethod.GET)
-    public String view(ModelMap model, @PathVariable int id) {
-        model.addAttribute("article", mArticleDao.findById(id));
+    @RequestMapping(value = "/articles/{idString}", method = RequestMethod.GET)
+    public String view(ModelMap model, @PathVariable String idString, HttpServletResponse response) {
+        List<Integer> ids = null;
+        try {
+            ids = Stream.of(idString.split(",")).map(Integer::parseInt).collect(toList());
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        model.addAttribute("articles", mArticleDao.findByIds(ids));
         return "article/view";
     }
 }

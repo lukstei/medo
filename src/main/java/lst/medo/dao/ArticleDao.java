@@ -38,6 +38,14 @@ public interface ArticleDao {
     @Nullable Article findById(int id);
 
     /**
+     * Finds all articles by the given ids.
+     *
+     * @param ids article ids
+     * @return articles
+     */
+    List<Article> findByIds(List<Integer> ids);
+
+    /**
      * Deletes an article by id.
      *
      * @param id article id

@@ -9,14 +9,13 @@ import lst.medo.model.Result;
 import org.jooq.*;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import static lst.medo.dao.impl.MatchesFulltextCondition.*;
 import static lst.medo.generated.Tables.*;
-import static org.jooq.impl.DSL.count;
 import static org.jooq.impl.DSL.val;
 
 public class JooqArticleDao implements ArticleDao {
@@ -113,27 +112,35 @@ public class JooqArticleDao implements ArticleDao {
                 .limit(params.getPage().getItemsPerPage())
                 .offset(params.getPage().getOffset())
                 .fetch(r ->
-                    new Article(
-                            r.getValue(ARTICLE.ID),
-                            r.getValue(ARTICLE_TYPE.NAME),
-                            isFulltextSearch ? r.getValue(tsHeadline) : null,
-                            r.getValue(AUTHOR.NAME),
-                            Util.fromSqlDate(r.getValue(ARTICLE.ARTICLE_DATE)),
-                            r.getValue(MEDIA.NAME))
+                                new Article(
+                                        r.getValue(ARTICLE.ID),
+                                        r.getValue(ARTICLE_TYPE.NAME),
+                                        isFulltextSearch ? r.getValue(tsHeadline) : null,
+                                        r.getValue(AUTHOR.NAME),
+                                        Util.fromSqlDate(r.getValue(ARTICLE.ARTICLE_DATE)),
+                                        r.getValue(MEDIA.NAME))
                 );
 
         return new Result<>(articles, count);
     }
 
     @Nullable @Override public Article findById(int id) {
+        List<Article> articles = findByIds(Arrays.asList(id));
+        if (!articles.isEmpty()) {
+            return articles.get(0);
+        }
+
+        return null;
+    }
+
+    @Override public List<Article> findByIds(List<Integer> ids) {
         return mContext.select(ARTICLE.ID, ARTICLE.TXT, ARTICLE_TYPE.NAME, AUTHOR.NAME, ARTICLE.ARTICLE_DATE, MEDIA.NAME)
                 .from(ARTICLE)
                 .leftOuterJoin(AUTHOR).on(ARTICLE.AUTHOR.eq(AUTHOR.ID))
                 .join(MEDIA).on(ARTICLE.MEDIA.eq(MEDIA.ID))
                 .join(ARTICLE_TYPE).on(ARTICLE.ARTICLE_TYPE.eq(ARTICLE_TYPE.ID))
-                .where(ARTICLE.ID.eq(id))
-                .fetchOne()
-                .map(r ->
+                .where(ARTICLE.ID.in(ids))
+                .fetch(r ->
                         new Article(
                                 r.getValue(ARTICLE.ID),
                                 r.getValue(ARTICLE_TYPE.NAME),
