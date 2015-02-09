@@ -25,6 +25,8 @@ Suche:
 Die Suchoberfläche bietet eine komfortable Möglichkeit die Artikel zu durchsuchen.
 Die Felder "Person" und "Medium" besitzen eine Autocompletion Funktion, d.h. man braucht nur den Anfang eines Begriffes eingeben und das System macht automatisch Vorschläge. Gibt man z.B. "han" oder "has" in das Feld "Person" ein, schlägt das System automatisch "Hans Peter Haselsteiner" vor.
 Mit "Datum" schränkt man den Zeitraum der Veröffentlichung des Artikels ein (mit Datepicker).
+Gefundene Artikel können im Volltext angezeigt werden.
+Es ist auch möglich, durch Auswahl der gewünschten Artikel und klick auf "Ausgewählte Artikel anzeigen", mehrere Artikel gleichzeitig anzuzeigen.
 
 Artikel anlegen:
 Hier kann ein neuer Artikel in das System eingetragen werden.
